@@ -1,0 +1,741 @@
+		     \||||||||||||||||||/
+		   --- Welcome to Maude ---
+		     /||||||||||||||||||\
+	    Maude 3.2.1 built: Feb 21 2022 18:21:17
+	     Copyright 1997-2022 SRI International
+		   Wed Aug  3 12:51:03 2022
+==========================================
+reduce in TEST-PROTOCOL : narrowing(upModule('FT-CHANNEL, false), upTerm([
+    NL1:NaturalList,N1:Natural]null[NL2:NaturalList,N2:Natural]), =>*, upTerm(
+    C2:Channel), standard, none, empty, '@, 2, unbounded) .
+rewrites: 11389 in 164ms cpu (164ms real) (69445 rewrites/second)
+result SolutionList: {(1).NzNat,'`[_`,_`]_`[_`,_`]['NL1:NaturalList,
+    'N1:Natural,'null.MsgSet,'NL2:NaturalList,'N2:Natural],(none).Substitution,
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:NaturalList,'%2:Natural,'null.MsgSet,
+    '%3:NaturalList,'%4:Natural] ; 
+  'N1:Natural <- '%2:Natural ; 
+  'N2:Natural <- '%4:Natural ; 
+  'NL1:NaturalList <- '%1:NaturalList ; 
+  'NL2:NaturalList <- '%3:NaturalList} ; {2,'`[_`,_`]_`[_`,_`]['$1:NaturalList,
+    '$2:Natural,'null.MsgSet,'$3:NaturalList,'$4:Natural],
+  'N1:Natural <- '$2:Natural ; 
+  'N2:Natural <- '$4:Natural ; 
+  'NL1:NaturalList <- '$1:NaturalList ; 
+  'NL2:NaturalList <- '$3:NaturalList,
+  '$1:NaturalList <- '%1:NaturalList ; 
+  '$2:Natural <- '%2:Natural ; 
+  '$3:NaturalList <- '%3:NaturalList ; 
+  '$4:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:NaturalList,'%2:Natural,'null.MsgSet,
+    '%3:NaturalList,'%4:Natural]} ; {3,'`[_`,_`]_`[_`,_`]['_;_['$2:Natural,
+    '$3:NaturalList],'$4:Natural,'`{_`,_`}['$2:Natural,'$4:Natural],
+    '$5:NaturalList,'$6:Natural],
+  'N1:Natural <- '$4:Natural ; 
+  'N2:Natural <- '$6:Natural ; 
+  'NL1:NaturalList <- '_;_['$2:Natural,'$3:NaturalList] ; 
+  'NL2:NaturalList <- '$5:NaturalList,
+  '$2:Natural <- '%1:Natural ; 
+  '$3:NaturalList <- '%2:NaturalList ; 
+  '$4:Natural <- '%3:Natural ; 
+  '$5:NaturalList <- '%4:NaturalList ; 
+  '$6:Natural <- '%5:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'`{_`,_`}['%1:Natural,'%3:Natural],'%4:NaturalList,
+    '%5:Natural]} ; {4,'`[_`,_`]_`[_`,_`]['_;_['$2:Natural,'$3:NaturalList],
+    '$4:Natural,'`{_`,_`}['$2:Natural,'$4:Natural],'$5:NaturalList,
+    '$6:Natural],
+  'N1:Natural <- '$4:Natural ; 
+  'N2:Natural <- '$6:Natural ; 
+  'NL1:NaturalList <- '_;_['$2:Natural,'$3:NaturalList] ; 
+  'NL2:NaturalList <- '$5:NaturalList,
+  '$2:Natural <- '#1:Natural ; 
+  '$3:NaturalList <- 'nil.NaturalList ; 
+  '$4:Natural <- '#2:Natural ; 
+  '$5:NaturalList <- '#3:NaturalList ; 
+  '$6:Natural <- '#4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'`{_`,_`}[
+    '#1:Natural,'#2:Natural],'#3:NaturalList,'#4:Natural]} ; {5,
+    '`[_`,_`]_`[_`,_`]['$3:Natural,'$4:Natural,'`{_`,_`}['$3:Natural,
+    '$4:Natural],'$5:NaturalList,'$6:Natural],
+  'N1:Natural <- '$4:Natural ; 
+  'N2:Natural <- '$6:Natural ; 
+  'NL1:NaturalList <- '$3:Natural ; 
+  'NL2:NaturalList <- '$5:NaturalList,
+  '$3:Natural <- '%1:Natural ; 
+  '$4:Natural <- '%2:Natural ; 
+  '$5:NaturalList <- '%3:NaturalList ; 
+  '$6:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {6,
+    '`[_`,_`]_`[_`,_`]['$4:NaturalList,'$5:Natural,'null.MsgSet,
+    '$6:NaturalList,'$7:Natural],
+  'N1:Natural <- '$5:Natural ; 
+  'N2:Natural <- '$7:Natural ; 
+  'NL1:NaturalList <- '$4:NaturalList ; 
+  'NL2:NaturalList <- '$6:NaturalList,
+  '$4:NaturalList <- '%1:NaturalList ; 
+  '$5:Natural <- '%2:Natural ; 
+  '$6:NaturalList <- '%3:NaturalList ; 
+  '$7:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:NaturalList,'%2:Natural,'null.MsgSet,
+    '%3:NaturalList,'%4:Natural]} ; {7,'`[_`,_`]_`[_`,_`]['_;_['$5:Natural,
+    '$6:NaturalList],'$7:Natural,'`{_`,_`}['$5:Natural,'$7:Natural],
+    '$8:NaturalList,'$9:Natural],
+  'N1:Natural <- '$7:Natural ; 
+  'N2:Natural <- '$9:Natural ; 
+  'NL1:NaturalList <- '_;_['$5:Natural,'$6:NaturalList] ; 
+  'NL2:NaturalList <- '$8:NaturalList,
+  '$5:Natural <- '%1:Natural ; 
+  '$6:NaturalList <- '%2:NaturalList ; 
+  '$7:Natural <- '%3:Natural ; 
+  '$8:NaturalList <- '%4:NaturalList ; 
+  '$9:Natural <- '%5:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'`{_`,_`}['%1:Natural,'%3:Natural],'%4:NaturalList,
+    '%5:Natural]} ; {8,'`[_`,_`]_`[_`,_`]['_;_['$5:Natural,'$6:NaturalList],
+    '$7:Natural,'`{_`,_`}['$5:Natural,'$7:Natural],'$8:NaturalList,
+    '$9:Natural],
+  'N1:Natural <- '$7:Natural ; 
+  'N2:Natural <- '$9:Natural ; 
+  'NL1:NaturalList <- '_;_['$5:Natural,'$6:NaturalList] ; 
+  'NL2:NaturalList <- '$8:NaturalList,
+  '$5:Natural <- '#1:Natural ; 
+  '$6:NaturalList <- 'nil.NaturalList ; 
+  '$7:Natural <- '#2:Natural ; 
+  '$8:NaturalList <- '#3:NaturalList ; 
+  '$9:Natural <- '#4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'`{_`,_`}[
+    '#1:Natural,'#2:Natural],'#3:NaturalList,'#4:Natural]} ; {9,
+    '`[_`,_`]_`[_`,_`]['$6:Natural,'$7:Natural,'`{_`,_`}['$6:Natural,
+    '$7:Natural],'$8:NaturalList,'$9:Natural],
+  'N1:Natural <- '$7:Natural ; 
+  'N2:Natural <- '$9:Natural ; 
+  'NL1:NaturalList <- '$6:Natural ; 
+  'NL2:NaturalList <- '$8:NaturalList,
+  '$6:Natural <- '%1:Natural ; 
+  '$7:Natural <- '%2:Natural ; 
+  '$8:NaturalList <- '%3:NaturalList ; 
+  '$9:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {10,
+    '`[_`,_`]_`[_`,_`]['_;_['$7:Natural,'$8:NaturalList],'$9:Natural,'`{_`,_`}[
+    '$7:Natural,'$9:Natural],'$10:NaturalList,'$11:Natural],
+  'N1:Natural <- '$9:Natural ; 
+  'N2:Natural <- '$11:Natural ; 
+  'NL1:NaturalList <- '_;_['$7:Natural,'$8:NaturalList] ; 
+  'NL2:NaturalList <- '$10:NaturalList,
+  '$10:NaturalList <- '%4:NaturalList ; 
+  '$11:Natural <- '%5:Natural ; 
+  '$7:Natural <- '%1:Natural ; 
+  '$8:NaturalList <- '%2:NaturalList ; 
+  '$9:Natural <- '%3:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'`{_`,_`}['%1:Natural,'%3:Natural],'%4:NaturalList,
+    '%5:Natural]} ; {11,'`[_`,_`]_`[_`,_`]['_;_['$7:Natural,'$8:NaturalList],
+    '$9:Natural,'`{_`,_`}['$7:Natural,'$9:Natural],'$10:NaturalList,
+    '$11:Natural],
+  'N1:Natural <- '$9:Natural ; 
+  'N2:Natural <- '$11:Natural ; 
+  'NL1:NaturalList <- '_;_['$7:Natural,'$8:NaturalList] ; 
+  'NL2:NaturalList <- '$10:NaturalList,
+  '$10:NaturalList <- '#3:NaturalList ; 
+  '$11:Natural <- '#4:Natural ; 
+  '$7:Natural <- '#1:Natural ; 
+  '$8:NaturalList <- 'nil.NaturalList ; 
+  '$9:Natural <- '#2:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'`{_`,_`}[
+    '#1:Natural,'#2:Natural],'#3:NaturalList,'#4:Natural]} ; {12,
+    '`[_`,_`]_`[_`,_`]['_;_['$8:Natural,'$9:NaturalList],'$10:Natural,
+    '`{_`,_`}['$8:Natural,'$10:Natural],'$11:NaturalList,'$12:Natural],
+  'N1:Natural <- '$10:Natural ; 
+  'N2:Natural <- '$12:Natural ; 
+  'NL1:NaturalList <- '_;_['$8:Natural,'$9:NaturalList] ; 
+  'NL2:NaturalList <- '$11:NaturalList,
+  '$10:Natural <- '%3:Natural ; 
+  '$11:NaturalList <- '%4:NaturalList ; 
+  '$12:Natural <- '%5:Natural ; 
+  '$8:Natural <- '%1:Natural ; 
+  '$9:NaturalList <- '%2:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'`{_`,_`}['%1:Natural,'%3:Natural],'%4:NaturalList,
+    '%5:Natural]} ; {13,'`[_`,_`]_`[_`,_`]['_;_['$8:Natural,'$9:NaturalList],
+    '$10:Natural,'`{_`,_`}['$8:Natural,'$10:Natural],'$11:NaturalList,
+    '$12:Natural],
+  'N1:Natural <- '$10:Natural ; 
+  'N2:Natural <- '$12:Natural ; 
+  'NL1:NaturalList <- '_;_['$8:Natural,'$9:NaturalList] ; 
+  'NL2:NaturalList <- '$11:NaturalList,
+  '$10:Natural <- '#2:Natural ; 
+  '$11:NaturalList <- '#3:NaturalList ; 
+  '$12:Natural <- '#4:Natural ; 
+  '$8:Natural <- '#1:Natural ; 
+  '$9:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'`{_`,_`}[
+    '#1:Natural,'#2:Natural],'#3:NaturalList,'#4:Natural]} ; {14,
+    '`[_`,_`]_`[_`,_`]['_;_['$9:Natural,'$10:NaturalList],'$11:Natural,
+    'null.MsgSet,'$12:NaturalList,'$13:Natural],
+  'N1:Natural <- '$11:Natural ; 
+  'N2:Natural <- '$13:Natural ; 
+  'NL1:NaturalList <- '_;_['$9:Natural,'$10:NaturalList] ; 
+  'NL2:NaturalList <- '$12:NaturalList,
+  '$10:NaturalList <- '%2:NaturalList ; 
+  '$11:Natural <- '%3:Natural ; 
+  '$12:NaturalList <- '%4:NaturalList ; 
+  '$13:Natural <- '%5:Natural ; 
+  '$9:Natural <- '%1:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'null.MsgSet,'%4:NaturalList,'%5:Natural]} ; {15,
+    '`[_`,_`]_`[_`,_`]['_;_['$9:Natural,'$10:NaturalList],'$11:Natural,
+    'null.MsgSet,'$12:NaturalList,'$13:Natural],
+  'N1:Natural <- '$11:Natural ; 
+  'N2:Natural <- '$13:Natural ; 
+  'NL1:NaturalList <- '_;_['$9:Natural,'$10:NaturalList] ; 
+  'NL2:NaturalList <- '$12:NaturalList,
+  '$10:NaturalList <- 'nil.NaturalList ; 
+  '$11:Natural <- '#2:Natural ; 
+  '$12:NaturalList <- '#3:NaturalList ; 
+  '$13:Natural <- '#4:Natural ; 
+  '$9:Natural <- '#1:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'null.MsgSet,
+    '#3:NaturalList,'#4:Natural]} ; {16,'`[_`,_`]_`[_`,_`]['$10:Natural,
+    '$11:Natural,'`{_`,_`}['$10:Natural,'$11:Natural],'$12:NaturalList,
+    '$13:Natural],
+  'N1:Natural <- '$11:Natural ; 
+  'N2:Natural <- '$13:Natural ; 
+  'NL1:NaturalList <- '$10:Natural ; 
+  'NL2:NaturalList <- '$12:NaturalList,
+  '$10:Natural <- '%1:Natural ; 
+  '$11:Natural <- '%2:Natural ; 
+  '$12:NaturalList <- '%3:NaturalList ; 
+  '$13:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {17,
+    '`[_`,_`]_`[_`,_`]['$11:Natural,'$12:Natural,'`{_`,_`}['$11:Natural,
+    '$12:Natural],'$13:NaturalList,'$14:Natural],
+  'N1:Natural <- '$12:Natural ; 
+  'N2:Natural <- '$14:Natural ; 
+  'NL1:NaturalList <- '$11:Natural ; 
+  'NL2:NaturalList <- '$13:NaturalList,
+  '$11:Natural <- '%1:Natural ; 
+  '$12:Natural <- '%2:Natural ; 
+  '$13:NaturalList <- '%3:NaturalList ; 
+  '$14:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {18,
+    '`[_`,_`]_`[_`,_`]['$12:Natural,'$13:Natural,'null.MsgSet,'$14:NaturalList,
+    '$15:Natural],
+  'N1:Natural <- '$13:Natural ; 
+  'N2:Natural <- '$15:Natural ; 
+  'NL1:NaturalList <- '$12:Natural ; 
+  'NL2:NaturalList <- '$14:NaturalList,
+  '$12:Natural <- '%1:Natural ; 
+  '$13:Natural <- '%2:Natural ; 
+  '$14:NaturalList <- '%3:NaturalList ; 
+  '$15:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'null.MsgSet,
+    '%3:NaturalList,'%4:Natural]} ; {19,'`[_`,_`]_`[_`,_`]['_;_['$13:Natural,
+    '$14:NaturalList],'$15:Natural,'__['ack['$15:Natural],'`{_`,_`}[
+    '$13:Natural,'$15:Natural]],'$16:NaturalList,'_+_['1.Natural,'$17:Natural,
+    '$15:Natural]],
+  'N1:Natural <- '$15:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$15:Natural,'$17:Natural] ; 
+  'NL1:NaturalList <- '_;_['$13:Natural,'$14:NaturalList] ; 
+  'NL2:NaturalList <- '$16:NaturalList,
+  '$13:Natural <- '%1:Natural ; 
+  '$14:NaturalList <- '%2:NaturalList ; 
+  '$15:Natural <- '%3:Natural ; 
+  '$16:NaturalList <- '%4:NaturalList ; 
+  '$17:Natural <- '%5:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'__['ack['%3:Natural],'`{_`,_`}['%1:Natural,'%3:Natural]],
+    '%4:NaturalList,'_+_['1.Natural,'%3:Natural,'%5:Natural]]} ; {20,
+    '`[_`,_`]_`[_`,_`]['_;_['$13:Natural,'$14:NaturalList],'$15:Natural,'__[
+    'ack['$15:Natural],'`{_`,_`}['$13:Natural,'$15:Natural]],'$16:NaturalList,
+    '_+_['1.Natural,'$17:Natural,'$15:Natural]],
+  'N1:Natural <- '$15:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$15:Natural,'$17:Natural] ; 
+  'NL1:NaturalList <- '_;_['$13:Natural,'$14:NaturalList] ; 
+  'NL2:NaturalList <- '$16:NaturalList,
+  '$13:Natural <- '#1:Natural ; 
+  '$14:NaturalList <- 'nil.NaturalList ; 
+  '$15:Natural <- '#2:Natural ; 
+  '$16:NaturalList <- '#3:NaturalList ; 
+  '$17:Natural <- '#4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'__['ack[
+    '#2:Natural],'`{_`,_`}['#1:Natural,'#2:Natural]],'#3:NaturalList,'_+_[
+    '1.Natural,'#2:Natural,'#4:Natural]]} ; {21,'`[_`,_`]_`[_`,_`]['_;_[
+    '$14:Natural,'$15:NaturalList],'_+_['1.Natural,'$16:Natural,'$17:Natural],
+    '__['ack['_+_['1.Natural,'$16:Natural,'$17:Natural]],'`{_`,_`}[
+    '$14:Natural,'_+_['1.Natural,'$16:Natural,'$17:Natural]]],'$18:NaturalList,
+    '$17:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$16:Natural,'$17:Natural] ; 
+  'N2:Natural <- '$17:Natural ; 
+  'NL1:NaturalList <- '_;_['$14:Natural,'$15:NaturalList] ; 
+  'NL2:NaturalList <- '$18:NaturalList,
+  '$14:Natural <- '%1:Natural ; 
+  '$15:NaturalList <- '%2:NaturalList ; 
+  '$16:Natural <- '%3:Natural ; 
+  '$17:Natural <- '%4:Natural ; 
+  '$18:NaturalList <- '%5:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],'_+_[
+    '1.Natural,'%3:Natural,'%4:Natural],'__['ack['_+_['1.Natural,'%3:Natural,
+    '%4:Natural]],'`{_`,_`}['%1:Natural,'_+_['1.Natural,'%3:Natural,
+    '%4:Natural]]],'%5:NaturalList,'%4:Natural]} ; {22,'`[_`,_`]_`[_`,_`]['_;_[
+    '$14:Natural,'$15:NaturalList],'_+_['1.Natural,'$16:Natural,'$17:Natural],
+    '__['ack['_+_['1.Natural,'$16:Natural,'$17:Natural]],'`{_`,_`}[
+    '$14:Natural,'_+_['1.Natural,'$16:Natural,'$17:Natural]]],'$18:NaturalList,
+    '$17:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$16:Natural,'$17:Natural] ; 
+  'N2:Natural <- '$17:Natural ; 
+  'NL1:NaturalList <- '_;_['$14:Natural,'$15:NaturalList] ; 
+  'NL2:NaturalList <- '$18:NaturalList,
+  '$14:Natural <- '#1:Natural ; 
+  '$15:NaturalList <- 'nil.NaturalList ; 
+  '$16:Natural <- '#2:Natural ; 
+  '$17:Natural <- '#3:Natural ; 
+  '$18:NaturalList <- '#4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'_+_['1.Natural,'#2:Natural,
+    '#3:Natural],'__['ack['_+_['1.Natural,'#2:Natural,'#3:Natural]],'`{_`,_`}[
+    '#1:Natural,'_+_['1.Natural,'#2:Natural,'#3:Natural]]],'#4:NaturalList,
+    '#3:Natural]} ; {23,'`[_`,_`]_`[_`,_`]['_;_['$15:Natural,'$16:NaturalList],
+    '$17:Natural,'ack['$17:Natural],'$18:NaturalList,'_+_['1.Natural,
+    '$19:Natural,'$17:Natural]],
+  'N1:Natural <- '$17:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$17:Natural,'$19:Natural] ; 
+  'NL1:NaturalList <- '_;_['$15:Natural,'$16:NaturalList] ; 
+  'NL2:NaturalList <- '$18:NaturalList,
+  '$15:Natural <- '%1:Natural ; 
+  '$16:NaturalList <- '%2:NaturalList ; 
+  '$17:Natural <- '%3:Natural ; 
+  '$18:NaturalList <- '%4:NaturalList ; 
+  '$19:Natural <- '%5:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'ack['%3:Natural],'%4:NaturalList,'_+_['1.Natural,'%3:Natural,
+    '%5:Natural]]} ; {24,'`[_`,_`]_`[_`,_`]['_;_['$15:Natural,
+    '$16:NaturalList],'$17:Natural,'ack['$17:Natural],'$18:NaturalList,'_+_[
+    '1.Natural,'$19:Natural,'$17:Natural]],
+  'N1:Natural <- '$17:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$17:Natural,'$19:Natural] ; 
+  'NL1:NaturalList <- '_;_['$15:Natural,'$16:NaturalList] ; 
+  'NL2:NaturalList <- '$18:NaturalList,
+  '$15:Natural <- '#1:Natural ; 
+  '$16:NaturalList <- 'nil.NaturalList ; 
+  '$17:Natural <- '#2:Natural ; 
+  '$18:NaturalList <- '#3:NaturalList ; 
+  '$19:Natural <- '#4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'ack['#2:Natural],
+    '#3:NaturalList,'_+_['1.Natural,'#2:Natural,'#4:Natural]]} ; {25,
+    '`[_`,_`]_`[_`,_`]['_;_['$16:Natural,'$17:NaturalList],'_+_['1.Natural,
+    '$18:Natural,'$19:Natural],'ack['_+_['1.Natural,'$18:Natural,
+    '$19:Natural]],'$20:NaturalList,'$19:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$18:Natural,'$19:Natural] ; 
+  'N2:Natural <- '$19:Natural ; 
+  'NL1:NaturalList <- '_;_['$16:Natural,'$17:NaturalList] ; 
+  'NL2:NaturalList <- '$20:NaturalList,
+  '$16:Natural <- '%1:Natural ; 
+  '$17:NaturalList <- '%2:NaturalList ; 
+  '$18:Natural <- '%3:Natural ; 
+  '$19:Natural <- '%4:Natural ; 
+  '$20:NaturalList <- '%5:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],'_+_[
+    '1.Natural,'%3:Natural,'%4:Natural],'ack['_+_['1.Natural,'%3:Natural,
+    '%4:Natural]],'%5:NaturalList,'%4:Natural]} ; {26,'`[_`,_`]_`[_`,_`]['_;_[
+    '$16:Natural,'$17:NaturalList],'_+_['1.Natural,'$18:Natural,'$19:Natural],
+    'ack['_+_['1.Natural,'$18:Natural,'$19:Natural]],'$20:NaturalList,
+    '$19:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$18:Natural,'$19:Natural] ; 
+  'N2:Natural <- '$19:Natural ; 
+  'NL1:NaturalList <- '_;_['$16:Natural,'$17:NaturalList] ; 
+  'NL2:NaturalList <- '$20:NaturalList,
+  '$16:Natural <- '#1:Natural ; 
+  '$17:NaturalList <- 'nil.NaturalList ; 
+  '$18:Natural <- '#2:Natural ; 
+  '$19:Natural <- '#3:Natural ; 
+  '$20:NaturalList <- '#4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'_+_['1.Natural,'#2:Natural,
+    '#3:Natural],'ack['_+_['1.Natural,'#2:Natural,'#3:Natural]],
+    '#4:NaturalList,'#3:Natural]} ; {27,'`[_`,_`]_`[_`,_`]['$17:Natural,
+    '$18:Natural,'__['ack['$18:Natural],'`{_`,_`}['$17:Natural,'$18:Natural]],
+    '$19:NaturalList,'_+_['1.Natural,'$20:Natural,'$18:Natural]],
+  'N1:Natural <- '$18:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$18:Natural,'$20:Natural] ; 
+  'NL1:NaturalList <- '$17:Natural ; 
+  'NL2:NaturalList <- '$19:NaturalList,
+  '$17:Natural <- '%1:Natural ; 
+  '$18:Natural <- '%2:Natural ; 
+  '$19:NaturalList <- '%3:NaturalList ; 
+  '$20:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'__['ack[
+    '%2:Natural],'`{_`,_`}['%1:Natural,'%2:Natural]],'%3:NaturalList,'_+_[
+    '1.Natural,'%2:Natural,'%4:Natural]]} ; {28,'`[_`,_`]_`[_`,_`][
+    '$18:Natural,'_+_['1.Natural,'$19:Natural,'$20:Natural],'__['ack['_+_[
+    '1.Natural,'$19:Natural,'$20:Natural]],'`{_`,_`}['$18:Natural,'_+_[
+    '1.Natural,'$19:Natural,'$20:Natural]]],'$21:NaturalList,'$20:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$19:Natural,'$20:Natural] ; 
+  'N2:Natural <- '$20:Natural ; 
+  'NL1:NaturalList <- '$18:Natural ; 
+  'NL2:NaturalList <- '$21:NaturalList,
+  '$18:Natural <- '%1:Natural ; 
+  '$19:Natural <- '%2:Natural ; 
+  '$20:Natural <- '%3:Natural ; 
+  '$21:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'_+_['1.Natural,'%2:Natural,
+    '%3:Natural],'__['ack['_+_['1.Natural,'%2:Natural,'%3:Natural]],'`{_`,_`}[
+    '%1:Natural,'_+_['1.Natural,'%2:Natural,'%3:Natural]]],'%4:NaturalList,
+    '%3:Natural]} ; {29,'`[_`,_`]_`[_`,_`]['$19:Natural,'$20:Natural,'ack[
+    '$20:Natural],'$21:NaturalList,'_+_['1.Natural,'$22:Natural,'$20:Natural]],
+  'N1:Natural <- '$20:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$20:Natural,'$22:Natural] ; 
+  'NL1:NaturalList <- '$19:Natural ; 
+  'NL2:NaturalList <- '$21:NaturalList,
+  '$19:Natural <- '%1:Natural ; 
+  '$20:Natural <- '%2:Natural ; 
+  '$21:NaturalList <- '%3:NaturalList ; 
+  '$22:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'ack['%2:Natural],
+    '%3:NaturalList,'_+_['1.Natural,'%2:Natural,'%4:Natural]]} ; {30,
+    '`[_`,_`]_`[_`,_`]['$20:Natural,'_+_['1.Natural,'$21:Natural,'$22:Natural],
+    'ack['_+_['1.Natural,'$21:Natural,'$22:Natural]],'$23:NaturalList,
+    '$22:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$21:Natural,'$22:Natural] ; 
+  'N2:Natural <- '$22:Natural ; 
+  'NL1:NaturalList <- '$20:Natural ; 
+  'NL2:NaturalList <- '$23:NaturalList,
+  '$20:Natural <- '%1:Natural ; 
+  '$21:Natural <- '%2:Natural ; 
+  '$22:Natural <- '%3:Natural ; 
+  '$23:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'_+_['1.Natural,'%2:Natural,
+    '%3:Natural],'ack['_+_['1.Natural,'%2:Natural,'%3:Natural]],
+    '%4:NaturalList,'%3:Natural]} ; {31,'`[_`,_`]_`[_`,_`]['_;_['$21:Natural,
+    '$22:NaturalList],'$23:Natural,'__['ack['$23:Natural],'`{_`,_`}[
+    '$21:Natural,'$23:Natural]],'_;_['$24:NaturalList,'$21:Natural],'_+_[
+    '1.Natural,'$23:Natural]],
+  'N1:Natural <- '$23:Natural ; 
+  'N2:Natural <- '$23:Natural ; 
+  'NL1:NaturalList <- '_;_['$21:Natural,'$22:NaturalList] ; 
+  'NL2:NaturalList <- '$24:NaturalList,
+  '$21:Natural <- '%1:Natural ; 
+  '$22:NaturalList <- '%2:NaturalList ; 
+  '$23:Natural <- '%3:Natural ; 
+  '$24:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'__['ack['%3:Natural],'`{_`,_`}['%1:Natural,'%3:Natural]],'_;_[
+    '%4:NaturalList,'%1:Natural],'_+_['1.Natural,'%3:Natural]]} ; {32,
+    '`[_`,_`]_`[_`,_`]['_;_['$21:Natural,'$22:NaturalList],'$23:Natural,'__[
+    'ack['$23:Natural],'`{_`,_`}['$21:Natural,'$23:Natural]],'_;_[
+    '$24:NaturalList,'$21:Natural],'_+_['1.Natural,'$23:Natural]],
+  'N1:Natural <- '$23:Natural ; 
+  'N2:Natural <- '$23:Natural ; 
+  'NL1:NaturalList <- '_;_['$21:Natural,'$22:NaturalList] ; 
+  'NL2:NaturalList <- '$24:NaturalList,
+  '$21:Natural <- '#1:Natural ; 
+  '$22:NaturalList <- 'nil.NaturalList ; 
+  '$23:Natural <- '#2:Natural ; 
+  '$24:NaturalList <- '#3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'__['ack[
+    '#2:Natural],'`{_`,_`}['#1:Natural,'#2:Natural]],'_;_['#3:NaturalList,
+    '#1:Natural],'_+_['1.Natural,'#2:Natural]]} ; {33,'`[_`,_`]_`[_`,_`]['_;_[
+    '$21:Natural,'$22:NaturalList],'$23:Natural,'__['ack['$23:Natural],
+    '`{_`,_`}['$21:Natural,'$23:Natural]],'_;_['$24:NaturalList,'$21:Natural],
+    '_+_['1.Natural,'$23:Natural]],
+  'N1:Natural <- '$23:Natural ; 
+  'N2:Natural <- '$23:Natural ; 
+  'NL1:NaturalList <- '_;_['$21:Natural,'$22:NaturalList] ; 
+  'NL2:NaturalList <- '$24:NaturalList,
+  '$21:Natural <- '#1:Natural ; 
+  '$22:NaturalList <- '#2:NaturalList ; 
+  '$23:Natural <- '#3:Natural ; 
+  '$24:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['#1:Natural,'#2:NaturalList],
+    '#3:Natural,'__['ack['#3:Natural],'`{_`,_`}['#1:Natural,'#3:Natural]],
+    '#1:Natural,'_+_['1.Natural,'#3:Natural]]} ; {34,'`[_`,_`]_`[_`,_`]['_;_[
+    '$21:Natural,'$22:NaturalList],'$23:Natural,'__['ack['$23:Natural],
+    '`{_`,_`}['$21:Natural,'$23:Natural]],'_;_['$24:NaturalList,'$21:Natural],
+    '_+_['1.Natural,'$23:Natural]],
+  'N1:Natural <- '$23:Natural ; 
+  'N2:Natural <- '$23:Natural ; 
+  'NL1:NaturalList <- '_;_['$21:Natural,'$22:NaturalList] ; 
+  'NL2:NaturalList <- '$24:NaturalList,
+  '$21:Natural <- '%1:Natural ; 
+  '$22:NaturalList <- 'nil.NaturalList ; 
+  '$23:Natural <- '%2:Natural ; 
+  '$24:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'__['ack[
+    '%2:Natural],'`{_`,_`}['%1:Natural,'%2:Natural]],'%1:Natural,'_+_[
+    '1.Natural,'%2:Natural]]} ; {35,'`[_`,_`]_`[_`,_`]['_;_['$22:Natural,
+    '$23:NaturalList],'$24:Natural,'ack['$24:Natural],'_;_['$25:NaturalList,
+    '$22:Natural],'_+_['1.Natural,'$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '_;_['$22:Natural,'$23:NaturalList] ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$22:Natural <- '%1:Natural ; 
+  '$23:NaturalList <- '%2:NaturalList ; 
+  '$24:Natural <- '%3:Natural ; 
+  '$25:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'ack['%3:Natural],'_;_['%4:NaturalList,'%1:Natural],'_+_[
+    '1.Natural,'%3:Natural]]} ; {36,'`[_`,_`]_`[_`,_`]['_;_['$22:Natural,
+    '$23:NaturalList],'$24:Natural,'ack['$24:Natural],'_;_['$25:NaturalList,
+    '$22:Natural],'_+_['1.Natural,'$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '_;_['$22:Natural,'$23:NaturalList] ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$22:Natural <- '#1:Natural ; 
+  '$23:NaturalList <- 'nil.NaturalList ; 
+  '$24:Natural <- '#2:Natural ; 
+  '$25:NaturalList <- '#3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'ack['#2:Natural],
+    '_;_['#3:NaturalList,'#1:Natural],'_+_['1.Natural,'#2:Natural]]} ; {37,
+    '`[_`,_`]_`[_`,_`]['_;_['$22:Natural,'$23:NaturalList],'$24:Natural,'ack[
+    '$24:Natural],'_;_['$25:NaturalList,'$22:Natural],'_+_['1.Natural,
+    '$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '_;_['$22:Natural,'$23:NaturalList] ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$22:Natural <- '#1:Natural ; 
+  '$23:NaturalList <- '#2:NaturalList ; 
+  '$24:Natural <- '#3:Natural ; 
+  '$25:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['#1:Natural,'#2:NaturalList],
+    '#3:Natural,'ack['#3:Natural],'#1:Natural,'_+_['1.Natural,'#3:Natural]]} ;
+    {38,'`[_`,_`]_`[_`,_`]['_;_['$22:Natural,'$23:NaturalList],'$24:Natural,
+    'ack['$24:Natural],'_;_['$25:NaturalList,'$22:Natural],'_+_['1.Natural,
+    '$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '_;_['$22:Natural,'$23:NaturalList] ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$22:Natural <- '%1:Natural ; 
+  '$23:NaturalList <- 'nil.NaturalList ; 
+  '$24:Natural <- '%2:Natural ; 
+  '$25:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'ack['%2:Natural],
+    '%1:Natural,'_+_['1.Natural,'%2:Natural]]} ; {39,'`[_`,_`]_`[_`,_`][
+    '$23:Natural,'$24:Natural,'__['ack['$24:Natural],'`{_`,_`}['$23:Natural,
+    '$24:Natural]],'_;_['$25:NaturalList,'$23:Natural],'_+_['1.Natural,
+    '$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '$23:Natural ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$23:Natural <- '%1:Natural ; 
+  '$24:Natural <- '%2:Natural ; 
+  '$25:NaturalList <- '%3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'__['ack[
+    '%2:Natural],'`{_`,_`}['%1:Natural,'%2:Natural]],'_;_['%3:NaturalList,
+    '%1:Natural],'_+_['1.Natural,'%2:Natural]]} ; {40,'`[_`,_`]_`[_`,_`][
+    '$23:Natural,'$24:Natural,'__['ack['$24:Natural],'`{_`,_`}['$23:Natural,
+    '$24:Natural]],'_;_['$25:NaturalList,'$23:Natural],'_+_['1.Natural,
+    '$24:Natural]],
+  'N1:Natural <- '$24:Natural ; 
+  'N2:Natural <- '$24:Natural ; 
+  'NL1:NaturalList <- '$23:Natural ; 
+  'NL2:NaturalList <- '$25:NaturalList,
+  '$23:Natural <- '#1:Natural ; 
+  '$24:Natural <- '#2:Natural ; 
+  '$25:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'__['ack[
+    '#2:Natural],'`{_`,_`}['#1:Natural,'#2:Natural]],'#1:Natural,'_+_[
+    '1.Natural,'#2:Natural]]} ; {41,'`[_`,_`]_`[_`,_`]['$24:Natural,
+    '$25:Natural,'ack['$25:Natural],'_;_['$26:NaturalList,'$24:Natural],'_+_[
+    '1.Natural,'$25:Natural]],
+  'N1:Natural <- '$25:Natural ; 
+  'N2:Natural <- '$25:Natural ; 
+  'NL1:NaturalList <- '$24:Natural ; 
+  'NL2:NaturalList <- '$26:NaturalList,
+  '$24:Natural <- '%1:Natural ; 
+  '$25:Natural <- '%2:Natural ; 
+  '$26:NaturalList <- '%3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'ack['%2:Natural],
+    '_;_['%3:NaturalList,'%1:Natural],'_+_['1.Natural,'%2:Natural]]} ; {42,
+    '`[_`,_`]_`[_`,_`]['$24:Natural,'$25:Natural,'ack['$25:Natural],'_;_[
+    '$26:NaturalList,'$24:Natural],'_+_['1.Natural,'$25:Natural]],
+  'N1:Natural <- '$25:Natural ; 
+  'N2:Natural <- '$25:Natural ; 
+  'NL1:NaturalList <- '$24:Natural ; 
+  'NL2:NaturalList <- '$26:NaturalList,
+  '$24:Natural <- '#1:Natural ; 
+  '$25:Natural <- '#2:Natural ; 
+  '$26:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'ack['#2:Natural],
+    '#1:Natural,'_+_['1.Natural,'#2:Natural]]} ; {43,'`[_`,_`]_`[_`,_`]['_;_[
+    '$25:Natural,'$26:NaturalList],'$27:Natural,'`{_`,_`}['$25:Natural,
+    '$27:Natural],'$28:NaturalList,'$29:Natural],
+  'N1:Natural <- '$27:Natural ; 
+  'N2:Natural <- '$29:Natural ; 
+  'NL1:NaturalList <- '_;_['$25:Natural,'$26:NaturalList] ; 
+  'NL2:NaturalList <- '$28:NaturalList,
+  '$25:Natural <- '%1:Natural ; 
+  '$26:NaturalList <- '%2:NaturalList ; 
+  '$27:Natural <- '%3:Natural ; 
+  '$28:NaturalList <- '%4:NaturalList ; 
+  '$29:Natural <- '%5:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['_;_['%1:Natural,'%2:NaturalList],
+    '%3:Natural,'`{_`,_`}['%1:Natural,'%3:Natural],'%4:NaturalList,
+    '%5:Natural]} ; {44,'`[_`,_`]_`[_`,_`]['_;_['$25:Natural,'$26:NaturalList],
+    '$27:Natural,'`{_`,_`}['$25:Natural,'$27:Natural],'$28:NaturalList,
+    '$29:Natural],
+  'N1:Natural <- '$27:Natural ; 
+  'N2:Natural <- '$29:Natural ; 
+  'NL1:NaturalList <- '_;_['$25:Natural,'$26:NaturalList] ; 
+  'NL2:NaturalList <- '$28:NaturalList,
+  '$25:Natural <- '#1:Natural ; 
+  '$26:NaturalList <- 'nil.NaturalList ; 
+  '$27:Natural <- '#2:Natural ; 
+  '$28:NaturalList <- '#3:NaturalList ; 
+  '$29:Natural <- '#4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'`{_`,_`}[
+    '#1:Natural,'#2:Natural],'#3:NaturalList,'#4:Natural]} ; {45,
+    '`[_`,_`]_`[_`,_`]['$26:Natural,'$27:Natural,'`{_`,_`}['$26:Natural,
+    '$27:Natural],'$28:NaturalList,'$29:Natural],
+  'N1:Natural <- '$27:Natural ; 
+  'N2:Natural <- '$29:Natural ; 
+  'NL1:NaturalList <- '$26:Natural ; 
+  'NL2:NaturalList <- '$28:NaturalList,
+  '$26:Natural <- '%1:Natural ; 
+  '$27:Natural <- '%2:Natural ; 
+  '$28:NaturalList <- '%3:NaturalList ; 
+  '$29:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {46,
+    '`[_`,_`]_`[_`,_`]['$27:Natural,'$28:Natural,'`{_`,_`}['$27:Natural,
+    '$28:Natural],'$29:NaturalList,'$30:Natural],
+  'N1:Natural <- '$28:Natural ; 
+  'N2:Natural <- '$30:Natural ; 
+  'NL1:NaturalList <- '$27:Natural ; 
+  'NL2:NaturalList <- '$29:NaturalList,
+  '$27:Natural <- '%1:Natural ; 
+  '$28:Natural <- '%2:Natural ; 
+  '$29:NaturalList <- '%3:NaturalList ; 
+  '$30:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]} ; {47,
+    '`[_`,_`]_`[_`,_`]['$28:Natural,'$29:Natural,'null.MsgSet,'$30:NaturalList,
+    '$31:Natural],
+  'N1:Natural <- '$29:Natural ; 
+  'N2:Natural <- '$31:Natural ; 
+  'NL1:NaturalList <- '$28:Natural ; 
+  'NL2:NaturalList <- '$30:NaturalList,
+  '$28:Natural <- '%1:Natural ; 
+  '$29:Natural <- '%2:Natural ; 
+  '$30:NaturalList <- '%3:NaturalList ; 
+  '$31:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'null.MsgSet,
+    '%3:NaturalList,'%4:Natural]} ; {48,'`[_`,_`]_`[_`,_`]['$29:Natural,
+    '$30:Natural,'__['ack['$30:Natural],'`{_`,_`}['$29:Natural,'$30:Natural]],
+    '$31:NaturalList,'_+_['1.Natural,'$32:Natural,'$30:Natural]],
+  'N1:Natural <- '$30:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$30:Natural,'$32:Natural] ; 
+  'NL1:NaturalList <- '$29:Natural ; 
+  'NL2:NaturalList <- '$31:NaturalList,
+  '$29:Natural <- '%1:Natural ; 
+  '$30:Natural <- '%2:Natural ; 
+  '$31:NaturalList <- '%3:NaturalList ; 
+  '$32:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'__['ack[
+    '%2:Natural],'`{_`,_`}['%1:Natural,'%2:Natural]],'%3:NaturalList,'_+_[
+    '1.Natural,'%2:Natural,'%4:Natural]]} ; {49,'`[_`,_`]_`[_`,_`][
+    '$30:Natural,'_+_['1.Natural,'$31:Natural,'$32:Natural],'__['ack['_+_[
+    '1.Natural,'$31:Natural,'$32:Natural]],'`{_`,_`}['$30:Natural,'_+_[
+    '1.Natural,'$31:Natural,'$32:Natural]]],'$33:NaturalList,'$32:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$31:Natural,'$32:Natural] ; 
+  'N2:Natural <- '$32:Natural ; 
+  'NL1:NaturalList <- '$30:Natural ; 
+  'NL2:NaturalList <- '$33:NaturalList,
+  '$30:Natural <- '%1:Natural ; 
+  '$31:Natural <- '%2:Natural ; 
+  '$32:Natural <- '%3:Natural ; 
+  '$33:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'_+_['1.Natural,'%2:Natural,
+    '%3:Natural],'__['ack['_+_['1.Natural,'%2:Natural,'%3:Natural]],'`{_`,_`}[
+    '%1:Natural,'_+_['1.Natural,'%2:Natural,'%3:Natural]]],'%4:NaturalList,
+    '%3:Natural]} ; {50,'`[_`,_`]_`[_`,_`]['$31:Natural,'$32:Natural,'ack[
+    '$32:Natural],'$33:NaturalList,'_+_['1.Natural,'$34:Natural,'$32:Natural]],
+  'N1:Natural <- '$32:Natural ; 
+  'N2:Natural <- '_+_['1.Natural,'$32:Natural,'$34:Natural] ; 
+  'NL1:NaturalList <- '$31:Natural ; 
+  'NL2:NaturalList <- '$33:NaturalList,
+  '$31:Natural <- '%1:Natural ; 
+  '$32:Natural <- '%2:Natural ; 
+  '$33:NaturalList <- '%3:NaturalList ; 
+  '$34:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'ack['%2:Natural],
+    '%3:NaturalList,'_+_['1.Natural,'%2:Natural,'%4:Natural]]} ; {51,
+    '`[_`,_`]_`[_`,_`]['$32:Natural,'_+_['1.Natural,'$33:Natural,'$34:Natural],
+    'ack['_+_['1.Natural,'$33:Natural,'$34:Natural]],'$35:NaturalList,
+    '$34:Natural],
+  'N1:Natural <- '_+_['1.Natural,'$33:Natural,'$34:Natural] ; 
+  'N2:Natural <- '$34:Natural ; 
+  'NL1:NaturalList <- '$32:Natural ; 
+  'NL2:NaturalList <- '$35:NaturalList,
+  '$32:Natural <- '%1:Natural ; 
+  '$33:Natural <- '%2:Natural ; 
+  '$34:Natural <- '%3:Natural ; 
+  '$35:NaturalList <- '%4:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'_+_['1.Natural,'%2:Natural,
+    '%3:Natural],'ack['_+_['1.Natural,'%2:Natural,'%3:Natural]],
+    '%4:NaturalList,'%3:Natural]} ; {52,'`[_`,_`]_`[_`,_`]['$33:Natural,
+    '$34:Natural,'__['ack['$34:Natural],'`{_`,_`}['$33:Natural,'$34:Natural]],
+    '_;_['$35:NaturalList,'$33:Natural],'_+_['1.Natural,'$34:Natural]],
+  'N1:Natural <- '$34:Natural ; 
+  'N2:Natural <- '$34:Natural ; 
+  'NL1:NaturalList <- '$33:Natural ; 
+  'NL2:NaturalList <- '$35:NaturalList,
+  '$33:Natural <- '%1:Natural ; 
+  '$34:Natural <- '%2:Natural ; 
+  '$35:NaturalList <- '%3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'__['ack[
+    '%2:Natural],'`{_`,_`}['%1:Natural,'%2:Natural]],'_;_['%3:NaturalList,
+    '%1:Natural],'_+_['1.Natural,'%2:Natural]]} ; {53,'`[_`,_`]_`[_`,_`][
+    '$33:Natural,'$34:Natural,'__['ack['$34:Natural],'`{_`,_`}['$33:Natural,
+    '$34:Natural]],'_;_['$35:NaturalList,'$33:Natural],'_+_['1.Natural,
+    '$34:Natural]],
+  'N1:Natural <- '$34:Natural ; 
+  'N2:Natural <- '$34:Natural ; 
+  'NL1:NaturalList <- '$33:Natural ; 
+  'NL2:NaturalList <- '$35:NaturalList,
+  '$33:Natural <- '#1:Natural ; 
+  '$34:Natural <- '#2:Natural ; 
+  '$35:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'__['ack[
+    '#2:Natural],'`{_`,_`}['#1:Natural,'#2:Natural]],'#1:Natural,'_+_[
+    '1.Natural,'#2:Natural]]} ; {54,'`[_`,_`]_`[_`,_`]['$34:Natural,
+    '$35:Natural,'ack['$35:Natural],'_;_['$36:NaturalList,'$34:Natural],'_+_[
+    '1.Natural,'$35:Natural]],
+  'N1:Natural <- '$35:Natural ; 
+  'N2:Natural <- '$35:Natural ; 
+  'NL1:NaturalList <- '$34:Natural ; 
+  'NL2:NaturalList <- '$36:NaturalList,
+  '$34:Natural <- '%1:Natural ; 
+  '$35:Natural <- '%2:Natural ; 
+  '$36:NaturalList <- '%3:NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'ack['%2:Natural],
+    '_;_['%3:NaturalList,'%1:Natural],'_+_['1.Natural,'%2:Natural]]} ; {55,
+    '`[_`,_`]_`[_`,_`]['$34:Natural,'$35:Natural,'ack['$35:Natural],'_;_[
+    '$36:NaturalList,'$34:Natural],'_+_['1.Natural,'$35:Natural]],
+  'N1:Natural <- '$35:Natural ; 
+  'N2:Natural <- '$35:Natural ; 
+  'NL1:NaturalList <- '$34:Natural ; 
+  'NL2:NaturalList <- '$36:NaturalList,
+  '$34:Natural <- '#1:Natural ; 
+  '$35:Natural <- '#2:Natural ; 
+  '$36:NaturalList <- 'nil.NaturalList ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['#1:Natural,'#2:Natural,'ack['#2:Natural],
+    '#1:Natural,'_+_['1.Natural,'#2:Natural]]} ; {56,'`[_`,_`]_`[_`,_`][
+    '$35:Natural,'$36:Natural,'`{_`,_`}['$35:Natural,'$36:Natural],
+    '$37:NaturalList,'$38:Natural],
+  'N1:Natural <- '$36:Natural ; 
+  'N2:Natural <- '$38:Natural ; 
+  'NL1:NaturalList <- '$35:Natural ; 
+  'NL2:NaturalList <- '$37:NaturalList,
+  '$35:Natural <- '%1:Natural ; 
+  '$36:Natural <- '%2:Natural ; 
+  '$37:NaturalList <- '%3:NaturalList ; 
+  '$38:Natural <- '%4:Natural ; 
+  'C2:Channel <- '`[_`,_`]_`[_`,_`]['%1:Natural,'%2:Natural,'`{_`,_`}[
+    '%1:Natural,'%2:Natural],'%3:NaturalList,'%4:Natural]}
+Bye.

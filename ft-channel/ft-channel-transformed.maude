@@ -1,0 +1,67 @@
+fmod NATURAL-LIST is 
+    protecting BOOL-OPS .
+
+    sorts Natural NaturalList . 
+    subsorts Natural < NaturalList .
+
+    ops 0 1 : -> Natural [ctor] .
+    op _+_ : Natural Natural -> Natural [ctor assoc comm id: 0] .
+    op _~_ : Natural Natural -> Bool [comm] . *** equality predicate
+    op _~/~_ : Natural Natural -> Bool [comm] . *** unequality predicate
+    op nil : -> NaturalList [ctor] .
+    op _;_ : NaturalList NaturalList -> NaturalList [ctor assoc] .
+
+    vars N M : Natural .   vars L Q : NaturalList .
+
+    eq N ~ N = true [variant] .
+    eq N ~ N + M + 1 = false [variant] .
+
+    eq N ~/~ N = false [variant] .
+    eq N ~/~ N + M + 1 = true [variant] .
+
+    eq L ; nil = L [variant] .
+    eq nil ; L = L [variant] .
+    eq L ; nil ; Q = L ; Q [variant] . *** B-coherence extension
+endfm
+
+
+mod FT-CHANNEL is 
+    protecting NATURAL-LIST .
+
+    sorts Msg MsgSet Channel .
+    subsorts Msg < MsgSet .
+
+    op null : -> MsgSet [ctor] .
+    op __ : MsgSet MsgSet -> MsgSet [ctor assoc comm] .
+    op [_,_]_[_,_] : NaturalList Natural MsgSet NaturalList Natural -> Channel [ctor] .
+    op {_,_} : Natural Natural -> Msg [ctor] .
+    op ack : Natural -> Msg [ctor] .
+    op empty : MsgSet -> Bool .
+
+    vars N M I J K : Natural .    vars L P Q R : NaturalList .
+    var MSG : Msg .    vars S S' : MsgSet .    vars CH CH' : Channel .
+
+    eq S null = S [variant] .
+    eq S S = S [variant] . *** set idempotency
+    eq S S S' = S S' [variant] . *** B-coherence extension
+
+    eq empty(null) = true [variant] .
+    eq empty(MSG S) = false [variant] .
+
+    rl [send] : [J ; L,N] S [P,M] => [J ; L,N] {J,N} S [P,M] [narrowing] .
+
+    crl [recv] : [L,N] {J,K} S [P,M] => [L,N] S ack(K) [P ; J, M + 1] 
+                    if K ~ M .
+
+    crl [recv] : [L,N] {J,K} S [P,M] => [L,N] S ack(K) [P,M] 
+                    if K ~/~ M .
+
+    crl [ack-recv] : [J ; L,N] ack(K) S [P,M] => [L,N + 1] S [P,M] 
+                    if K ~ N .
+
+    crl [ack-recv] : [J ; L,N] ack(K) S [P,M] => [J ; L,N] S [P,M] 
+                    if K ~/~ N .
+
+    crl [loss] : [L,N] S S' [P,M] => [L,N] S' [P,M] 
+                    if empty(null) .
+endm

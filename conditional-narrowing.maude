@@ -1,0 +1,542 @@
+fmod CONVERT-VARIABLES is
+    protecting META-LEVEL .
+    protecting CONVERSION .
+    
+    var F : Qid .   var V : Variable .   var GT : GroundTerm .   var GNTL : NeGroundTermList .   var NTL : NeTermList .
+    var T : Term .   var N : Nat .   vars TL TL' TL'' : TermList .   vars SB SB' : Substitution .   var VarType : Type .
+
+    op rename : TermList Nat -> Substitution .
+    eq rename(empty,N) = none .
+    eq rename((TL,V,TL',V,TL''),N) = rename((TL,V,TL',TL''),N) .
+    eq rename((V,TL),N) = V <- qid("$" + string(N,10) + ":" + string(getType(V))) ; rename(TL,N + 1) [owise] .
+
+    op getVars : Term -> TermList .
+    eq getVars(GT) = empty .
+    eq getVars(V) = V .
+    eq getVars(F[NTL]) = getVars(NTL) [owise] .
+
+    op getVars : TermList -> TermList .
+    eq getVars(empty) = empty .
+    eq getVars((T,GNTL)) = getVars(T) .
+    eq getVars((T,NTL)) = (getVars(T),getVars(NTL)) [owise] .
+
+    op getRangeVars : Substitution -> TermList .
+    eq getRangeVars((none).Substitution) = empty .
+    eq getRangeVars(((V <- T) ; SB)) = (getVars(T),getRangeVars(SB)) .
+
+    op getVarsNumber : Term -> Nat .
+    eq getVarsNumber(GT) = 0 .
+    eq getVarsNumber(V) = 1 .
+    eq getVarsNumber(F[NTL]) = getVarsNumber(NTL) [owise] .
+
+    op getVarsNumber : TermList -> Nat .
+    eq getVarsNumber(empty) = 0 .
+    eq getVarsNumber(('$N:VarType, TL)) = 1 + getVarsNumber(TL) .
+    eq getVarsNumber((V,TL)) = getVarsNumber(TL) [owise] .
+
+    op applySub : TermList Substitution -> TermList .
+    eq applySub(V,(V <- T) ; SB) = T .
+    eq applySub(F[TL], SB) = F[applySub(TL, SB)] .
+    eq applySub((T,NTL),SB) = (applySub(T,SB), applySub(NTL,SB)) .
+    eq applySub(T,SB) = T [owise] .
+
+    op applySub : Substitution Substitution -> Substitution .
+    eq applySub((none).Substitution,SB) = none .
+    eq applySub(V <- T ; SB,SB') =  V <- applySub(T,SB') ; applySub(SB,SB') .
+endfm
+
+
+
+fmod CONVERT-MODULE is
+    protecting META-MODULE .
+    protecting META-LEVEL .
+    protecting META-TERM .
+    
+    var ModId : Qid .   var Imports : ImportList .   var Sorts : SortSet .   var Subsorts : SubsortDeclSet .   
+    var Ops : OpDeclSet .   var Membs : MembAxSet .   var Eqs : EquationSet .   vars Rls1 Rls2 : RuleSet .   
+    var StratsDecl : StratDeclSet .   var StratsDef : StratDefSet .   vars Lhs Rhs : Term . 
+    vars SmtConst1 SmtConst2 T1 T2 T3 : Term .   var Attrs : AttrSet .   var KSet : KindSet .
+    vars Cond1 Cond2 : Condition .   var K : Kind .
+    
+    op transformMod : Module -> Module .
+
+    eq transformMod(mod ModId is Imports sorts Sorts . Subsorts Ops Membs Eqs Rls1 endm)
+                = mod ModId is Imports (protecting 'META-TERM .) sorts Sorts ; 'BoolT . Subsorts 
+                    (Ops 
+                        (op 'tt : nil -> 'BoolT [ctor] .)
+                        (op '_&_ : 'BoolT 'BoolT -> 'BoolT [assoc comm id('tt.BoolT)] .)        
+                        (op '_=:=_ : 'Universal 'Universal -> 'BoolT [ctor poly (1 2)] .)
+                        (op '_|_ : 'Universal 'BoolT -> 'Universal [ctor poly (0 1)] .)
+                    )
+                    Membs 
+                    addEqs(Eqs, getKinds(mod ModId is Imports sorts Sorts ; 'BoolT . Subsorts Ops Membs Eqs Rls1 endm))
+                    transformRls(Rls1) endm .
+                    
+    eq transformMod(th ModId is Imports sorts Sorts . Subsorts Ops Membs Eqs Rls1 endth)
+                = th ModId is Imports (protecting 'META-TERM .) sorts Sorts ; 'BoolT . Subsorts 
+                    (Ops 
+                        (op 'tt : nil -> 'BoolT [ctor] .)
+                        (op '_&_ : 'BoolT 'BoolT -> 'BoolT [assoc comm id('tt.BoolT)] .)        
+                        (op '_=:=_ : 'Universal 'Universal -> 'BoolT [ctor poly (1 2)] .)
+                        (op '_|_ : 'Universal 'BoolT -> 'Universal [ctor poly (0 1)] .)
+                    )
+                    Membs
+                    addEqs(Eqs, getKinds(mod ModId is Imports sorts Sorts ; 'BoolT . Subsorts Ops Membs Eqs Rls1 endm))
+                    transformRls(Rls1) endth . 
+
+    eq transformMod(smod ModId is Imports sorts Sorts . Subsorts Ops Membs Eqs Rls1 StratsDecl StratsDef endsm)
+                = smod ModId is Imports (protecting 'META-TERM .) sorts Sorts ; 'BoolT . Subsorts 
+                    (Ops 
+                        (op 'tt : nil -> 'BoolT [ctor] .)
+                        (op '_&_ : 'BoolT 'BoolT -> 'BoolT [assoc comm id('tt.BoolT)] .)        
+                        (op '_=:=_ : 'Universal 'Universal -> 'BoolT [ctor poly (1 2)] .)
+                        (op '_|_ : 'Universal 'BoolT -> 'Universal [ctor poly (0 1)] .)
+                    )
+                    Membs
+                    addEqs(Eqs, getKinds(mod ModId is Imports sorts Sorts ; 'BoolT . Subsorts Ops Membs Eqs Rls1 endm))
+                    transformRls(Rls1) StratsDecl StratsDef endsm .
+
+    eq transformMod(sth ModId is Imports sorts Sorts . Subsorts Ops Membs Eqs Rls1 StratsDecl StratsDef endsth)
+                = sth ModId is Imports (protecting 'META-TERM .) sorts Sorts ; 'BoolT . Subsorts 
+                    (Ops 
+                        (op 'tt : nil -> 'BoolT [ctor] .)
+                        (op '_&_ : 'BoolT 'BoolT -> 'BoolT [assoc comm id('tt.BoolT)] .)        
+                        (op '_=:=_ : 'Universal 'Universal -> 'BoolT [ctor poly (1 2)] .)
+                        (op '_|_ : 'Universal 'BoolT -> 'Universal [ctor poly (0 1)] .)
+                    )
+                    Membs
+                    addEqs(Eqs, getKinds(mod ModId is Imports sorts Sorts ; 'BoolT . Subsorts Ops Membs Eqs Rls1 endm))
+                    transformRls(Rls1) StratsDecl StratsDef endsth .
+
+    op addEqs : EquationSet KindSet -> EquationSet .    
+    eq addEqs(Eqs, K ; KSet)
+                = addEqs(
+                    (Eqs
+                    eq '_=:=_[addTypeToVar(K,'X), addTypeToVar(K,'X)] = 'tt.BoolT [variant] .
+                    eq '_|_[addTypeToVar(K,'X), 'tt.BoolT] = addTypeToVar(K,'X) [variant] .),
+                    KSet) .
+    eq addEqs(Eqs, KSet) = Eqs [owise] .
+
+    op addTypeToVar : Type Qid -> Variable [memo] .
+    eq addTypeToVar(TP:Qid, V:Qid)
+                = qid(string(V:Qid) + ":" + string(TP:Qid)) .
+
+    op transformRls : RuleSet -> RuleSet .
+    eq transformRls(Rls1 (crl Lhs => Rhs if nil [Attrs] .) Rls2)
+                = transformRls(Rls1 Rls2) (rl Lhs => Rhs [Attrs narrowing] .) .
+    eq transformRls(Rls1 (crl Lhs => Rhs if Cond1 /\ (T1 = T2) /\ Cond2 [Attrs] .) Rls2)
+                = transformRls(Rls1 Rls2) transformConditions(crl '_|_[Lhs,'_=:=_[T1,T2]] => Rhs if Cond1 /\ Cond2 [Attrs] .) .
+    eq transformRls(Rls1) = Rls1 [owise] .
+
+    op transformConditions : Rule -> Rule .
+    eq transformConditions(crl (Lhs) => Rhs if nil [Attrs] .)
+                =  (rl (Lhs) => Rhs [Attrs narrowing] .) .
+    eq transformConditions(crl '_|_[Lhs,T1] => Rhs if Cond1 /\ (T2 = T3) /\ Cond2 [Attrs] .)
+                = transformConditions(crl '_|_[Lhs,'_&_[T1,'_=:=_[T2,T3]]] => Rhs if Cond1 /\ Cond2 [Attrs] .) .
+endfm
+
+
+
+fmod NARROWING is
+    protecting CONVERT-VARIABLES .
+    protecting CONVERT-MODULE .
+
+    sorts TreeInfo Node NodeList Solution SolutionList NarrowingInfo AlgorithmOption AlgorithmOptionSet SearchArrow UserArguments .
+    subsorts Node < NodeList < TreeInfo .
+    subsorts UnificationPair < Solution < SolutionList < NarrowingInfo .
+    subsort AlgorithmOption < AlgorithmOptionSet .
+
+    ops canonical standard smt none : -> AlgorithmOption .
+    op __ : AlgorithmOptionSet AlgorithmOptionSet -> AlgorithmOptionSet [comm assoc id: none] .
+    ops =>1 =>! =>+ =>* : -> SearchArrow .
+    ops empty : -> NodeList .
+
+    var Mod : Module .   var AlgorithmOptionSet : AlgorithmOptionSet .   var SArrow : SearchArrow .   var VariantOptionSet : VariantOptionSet .  
+    var Var : Variable .   var NarrAppRes : NarrowingApplyResult .   vars Context1 Context2 : Context .      
+    vars InitTerm TargetTerm Term1 Term2 : Term .   vars Type1 Type2 : Type .   vars NodeList1 NodeList2 NodeList3 : NodeList .
+    vars IrredTList LocalIrredTList1 LocalIrredTList2 : TermList .   vars SolList1 SolList2 : SolutionList .    
+    vars Subs1 Subs2 Subs3 Subs4 : Substitution .   vars MaxDepth MaxSol : Bound .   vars VarQid1 VarQid2 VarQid3 RuleLabel1 RuleLabel2 : Qid .         
+    vars NodeCounter VarCounter SolCounter NodeId NodeBranch1 NodeBranch2 ParentId GrandparentId NodeDepth1 NodeDepth2 : Nat .   
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- narrowing command: allows defining a narrowing problem to be solved using standard narrowing       ---
+    ---                    or canonical narrowing, using a search arrow and a maximum depth and a          ---
+    ---                    maximum of solutions.                                                           ---
+    ----------------------------------------------------------------------------------------------------------
+    op narrowing : Module Term SearchArrow Term AlgorithmOptionSet VariantOptionSet TermList Qid Bound Bound -> SolutionList .
+    op noSolution : -> SolutionList .
+    op [_,_,_,_,_,_,_,_,_,_] : Module Term SearchArrow Term AlgorithmOptionSet VariantOptionSet TermList Qid Bound Bound -> UserArguments .
+    op [_||_||(_,_,_)] : NodeList NodeList Nat Nat Nat -> TreeInfo .
+    op _;_ : NodeList NodeList -> NodeList [assoc id: empty] .
+
+    --- If Maximum Solutions = 0, return noSolution
+    eq narrowing(Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0)
+            = noSolution .
+
+    --- Otherwise, begin with the algorithm (standard)
+    eq narrowing(Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol)
+            = initialStep([transformMod(Mod), InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, empty, VarQid1, MaxDepth, MaxSol],
+                           [empty || empty || (1, 1, 1)]) [owise] .
+
+    --- Otherwise, begin with the algorithm (canonical)
+    eq narrowing(Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol)
+            = initialStep([transformMod(Mod), InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                           [empty || empty || (1, 1, 1)]) [owise] .      
+
+    
+    ----------------------------------------------------------------------------------------------------------
+    --- Perform the first step depending on the search arrow                                               ---
+    ----------------------------------------------------------------------------------------------------------
+    op initialStep : UserArguments TreeInfo -> NarrowingInfo . 
+    op _;_ : SolutionList SolutionList -> SolutionList [assoc id: noSolution] .
+    
+    eq initialStep([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [empty || empty || (1, 1, 1)])
+                        = getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                                  [empty || empty || (1, 1, 1)], 
+                                                  iterativeMetaVariantUnify(Mod, InitTerm =? TargetTerm, VariantOptionSet, IrredTList, VarQid1, 0)) .
+
+    eq initialStep([Mod, InitTerm, =>1, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [empty || empty || (1, 1, 1)])
+                        = generateNext([Mod, InitTerm, =>1, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, 1, MaxSol],
+                                       [empty || empty || (1, 1, 1)], noSolution) .
+    
+    eq initialStep([Mod, InitTerm, =>+, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [empty || empty || (1, 1, 1)])
+                        = generateNext([Mod, InitTerm, =>+, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                       [empty || empty || (1, 1, 1)], noSolution) [owise] .
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Gets all possible unifiers given two terms                                                         ---
+    ----------------------------------------------------------------------------------------------------------
+    op iterativeMetaVariantUnify : Module UnificationProblem VariantOptionSet TermList Qid Nat -> SolutionList .
+
+    eq iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid1, 0) 
+            = metaVariantUnify(Mod, Term1 =? Term2, IrredTList, VarQid1, VariantOptionSet, 0) ; 
+              iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid1, 1) .
+
+    eq {Subs1, VarQid1} ; iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid2, UnifierCounter:NzNat)
+            = {Subs1, VarQid1} ; metaVariantUnify(Mod, Term1 =? Term2, IrredTList, VarQid2, VariantOptionSet, UnifierCounter:NzNat) ; 
+              iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid2, UnifierCounter:NzNat + 1) .
+
+    --- Stop looking for unifiers when noUnifier / noUnifierIncomplete is returned
+    eq SolList1 ; noUnifier ; iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid1, UnifierCounter:NzNat)
+            = SolList1 .
+
+    eq SolList1 ; noUnifierIncomplete ; iterativeMetaVariantUnify(Mod, Term1 =? Term2, VariantOptionSet, IrredTList, VarQid1, UnifierCounter:NzNat)
+            = SolList1 .
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Get narrowing solutions from the found unifiers (initial term)                                     ---
+    ----------------------------------------------------------------------------------------------------------
+    op getInitialTermSolutions : UserArguments TreeInfo SolutionList -> NarrowingInfo .
+    op {_,_,_,_} : Nat Term Substitution Substitution -> Solution .
+
+    --- If the maximum solutions limit is reached, remove unifiers left iteratively and return solutions list
+    eq getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                               [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1 ; {Subs1, VarQid2}) 
+                                    = getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                                                              [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1) .
+    eq getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                               [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                                    = SolList1 [owise] .
+
+    --- Get solutions from unifiers when MaxSol = unbounded
+    eq getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, unbounded],
+                               [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1 ; {Subs1, VarQid2} ; SolList2) 
+                                    = getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, unbounded],
+                                                              [empty || empty || (NodeCounter, VarCounter, SolCounter + 1)], 
+                                                              SolList1 ; {SolCounter, InitTerm, none, Subs1} ; SolList2) .
+
+    --- Get solutions from unifiers when MaxSol is a nat > 0
+    eq getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, s(MaxSol)],
+                               [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1 ; {Subs1, VarQid2} ; SolList2) 
+                                    = getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                                              [empty || empty || (NodeCounter, VarCounter, SolCounter + 1)], 
+                                                              SolList1 ; {SolCounter, InitTerm, none, Subs1} ; SolList2) .
+    
+    --- If all unifiers have been processed, continue with the node generation
+    eq getInitialTermSolutions([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                               [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                                    = generateNext([Mod, InitTerm, =>*, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                                   [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1) [owise] .
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Generate a new node                                                                                ---
+    ---------------------------------------------------------------------------------------------------------- 
+    op generateNext : UserArguments TreeInfo SolutionList -> NarrowingInfo .
+    op {_,_,_,_,_,_} : Nat NarrowingApplyResult? Nat Nat Nat TermList -> Node .
+
+    --- Stop if MaxDepth = 0 
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, 0, MaxSol],
+                    [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = SolList1 .
+
+    --- Generate the first child of the initial node
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [empty || empty || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [empty || 
+                                     {NodeCounter, metaNarrowingApply(Mod, InitTerm, IrredTList, VarQid1, VariantOptionSet, 0), 0, 0, 1, IrredTList}
+                                     || (NodeCounter + 1, VarCounter, SolCounter)], SolList1) [owise] .
+    
+    --- Generate nodes in depth 1 (common)
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, 1, MaxSol],
+                    [NodeList1 || 
+                    {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} ; NodeList2 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, 1, MaxSol],
+                                     [NodeList1 ; {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, InitTerm, IrredTList, VarQid1, VariantOptionSet, s(NodeBranch1)), s(NodeBranch1), 0, 1, IrredTList} ;
+                                        NodeList2
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+    --- Generate nodes in depth 1 (standard narrowing)
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 || 
+                    {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} ; NodeList2 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, InitTerm, IrredTList, VarQid1, VariantOptionSet, s(NodeBranch1)), s(NodeBranch1), 0, 1, IrredTList} ;
+                                        NodeList2 ;
+                                        {NodeCounter + 1, metaNarrowingApply(Mod, Term1, LocalIrredTList1, '@, VariantOptionSet, 0), 0, NodeId, 2, LocalIrredTList1}
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+    --- Generate nodes in depth 1 (canonical narrowing)
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 || 
+                    {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} ; NodeList2 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, 0, 1, LocalIrredTList1} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, InitTerm, IrredTList, VarQid1, VariantOptionSet, s(NodeBranch1)), s(NodeBranch1), 0, 1, IrredTList} ;
+                                        NodeList2 ;
+                                        {NodeCounter + 1, metaNarrowingApply(Mod, Term1, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2)), 
+                                        '@, VariantOptionSet, 0), 0, NodeId, 2, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2))}
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+    
+    --- Generate nodes in depth > 1 (standard narrowing)
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                    || 
+                    {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, MaxDepth, LocalIrredTList2} ; NodeList3 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2 ;
+                                     {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, MaxDepth, LocalIrredTList2} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, Term1, LocalIrredTList1, VarQid1, VariantOptionSet, s(NodeBranch2)), s(NodeBranch2), ParentId:NzNat, MaxDepth, LocalIrredTList1} ;
+                                        NodeList3
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                    || 
+                    {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, NodeDepth2, LocalIrredTList2} ; NodeList3 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2 ;
+                                     {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, NodeDepth2, LocalIrredTList2} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, Term1, LocalIrredTList1, VarQid1, VariantOptionSet, s(NodeBranch2)), s(NodeBranch2), ParentId:NzNat, NodeDepth2, LocalIrredTList1} ;
+                                        NodeList3 ;
+                                        {NodeCounter + 1, metaNarrowingApply(Mod, Term2, LocalIrredTList2, '@, VariantOptionSet, 0), 0, NodeId, s(NodeDepth2), LocalIrredTList2}
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+    --- Generate nodes in depth > 1 (canonical narrowing)
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                    || 
+                    {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, MaxDepth, LocalIrredTList2} ; NodeList3 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2 ;
+                                     {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, MaxDepth, LocalIrredTList2} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, Term1, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2)), 
+                                        VarQid1, VariantOptionSet, s(NodeBranch2)), s(NodeBranch2), ParentId:NzNat, MaxDepth, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2))} ;
+                                        NodeList3
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+    eq generateNext([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                    || 
+                    {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, NodeDepth2, LocalIrredTList2} ; NodeList3 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 ; {ParentId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, GrandparentId, NodeDepth1, LocalIrredTList1} ; NodeList2 ;
+                                     {NodeId, {Term2, Type2, Context2, RuleLabel2, Subs3, Subs4, VarQid3}, NodeBranch2, ParentId:NzNat, NodeDepth2, LocalIrredTList2} 
+                                     || {NodeCounter, metaNarrowingApply(Mod, Term1, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2)),
+                                         VarQid1, VariantOptionSet, s(NodeBranch2)), s(NodeBranch2), ParentId:NzNat, NodeDepth2, 
+                                        (LocalIrredTList1, getIrreducibilityTerm(Mod, RuleLabel1, Subs2))} ;
+                                        NodeList3 ;
+                                        {NodeCounter + 1, metaNarrowingApply(Mod, Term2, 
+                                        (LocalIrredTList2, getIrreducibilityTerm(Mod, RuleLabel2, Subs4)), 
+                                        '@, VariantOptionSet, 0), 0, NodeId, s(NodeDepth2), 
+                                        (LocalIrredTList2, getIrreducibilityTerm(Mod, RuleLabel2, Subs4))}
+                                     || (NodeCounter + 2, VarCounter, SolCounter)], SolList1) [owise] .
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Obtain the irreducibility term associated with a narrowing step                                    ---
+    ----------------------------------------------------------------------------------------------------------
+    var Rls : RuleSet .   vars RHS LHS : Term .   var Atts : AttrSet .
+
+    op getIrreducibilityTerm : Module Qid Substitution -> Term .
+    op getLhs : RuleSet Qid -> Term .
+
+    eq getIrreducibilityTerm(Mod, RuleLabel1, Subs1) 
+        = getTerm(metaReduce(Mod, applySub(getLhs(getRls(Mod), RuleLabel1), Subs1))) .
+
+    eq getLhs(Rls (rl LHS => RHS [Atts label(RuleLabel1)] .), RuleLabel1) 
+        = LHS .
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Rename fresh variables in a new node (If MaxDepth not reached)                                     ---
+    ---------------------------------------------------------------------------------------------------------- 
+    op renameVars : UserArguments TreeInfo SolutionList -> NarrowingInfo .
+    op _,_,_ : UserArguments TreeInfo SolutionList -> NarrowingInfo .
+
+    --- End the algorithm if the new node is deeper than MaxDepth or the NodeList to proccess is empty
+    eq renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                  [NodeList1 || 
+                  {NodeId, NarrAppRes, NodeBranch1, ParentId, s(MaxDepth), LocalIrredTList1} ; NodeList2
+                  || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = SolList1 .
+
+    eq renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                  [NodeList1 || empty || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = SolList1 .
+
+    --- Rename variables of the term and substitutions associated to the new node  
+    eq renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                  [NodeList1 || 
+                  {NodeId, failure, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                  || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], SolList1) .                            
+    
+    eq renameVars([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                  [NodeList1 || 
+                  {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                  || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = unifyTerms([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                     [NodeList1 || 
+                                     {NodeId, {applySub(Term1,rename((getVars(Term1),getRangeVars(Subs1),getRangeVars(Subs2)),VarCounter)), 
+                                     Type1, Context1, RuleLabel1,
+                                     applySub(Subs1,rename((getVars(Term1),getRangeVars(Subs1),getRangeVars(Subs2)),VarCounter)), 
+                                     applySub(Subs2,rename((getVars(Term1),getRangeVars(Subs1),getRangeVars(Subs2)),VarCounter)), 
+                                     '$}, 
+                                     NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                                     || (NodeCounter, VarCounter + getVarsNumber((getVars(Term1),getRangeVars(Subs1),getRangeVars(Subs2))), SolCounter)], SolList1) [owise] .
+
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Try to unify a term related to a generated node                                                    ---
+    ----------------------------------------------------------------------------------------------------------
+    op unifyTerms : UserArguments TreeInfo SolutionList -> NarrowingInfo . 
+
+    eq unifyTerms([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 || 
+                    {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, (standard AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                           [NodeList1 || 
+                                           {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2  
+                                           || (NodeCounter, VarCounter, SolCounter)], 
+                                           SolList1 ; iterativeMetaVariantUnify(Mod, TargetTerm =? Term1, VariantOptionSet, empty, VarQid1, 0)) .
+
+    eq unifyTerms([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                    [NodeList1 || 
+                    {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                    || (NodeCounter, VarCounter, SolCounter)], SolList1)
+                        = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, (canonical AlgorithmOptionSet), VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                           [NodeList1 || 
+                                           {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2  
+                                           || (NodeCounter, VarCounter, SolCounter)], 
+                                           SolList1 ; iterativeMetaVariantUnify(Mod, TargetTerm =? Term1, VariantOptionSet, LocalIrredTList1, VarQid1, 0)) .    
+    
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Get narrowing solutions from the found unifiers                                                    ---
+    ----------------------------------------------------------------------------------------------------------
+    op getTermSolutions : UserArguments TreeInfo SolutionList -> NarrowingInfo .
+
+    --- If the maximum solutions limit is reached, remove unifiers left iteratively and return solutions list
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                        [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], 
+                        SolList1 ; {Subs1, VarQid2}) 
+                            = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                                               [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], 
+                                               SolList1) .
+
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, 0],
+                               [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                                    = SolList1 [owise] .
+
+    --- Get solutions from unifiers when MaxSol = unbounded
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, unbounded],
+                        [NodeList1 || 
+                        {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                        || (NodeCounter, VarCounter, SolCounter)], 
+                        SolList1 ; {Subs3, VarQid3} ; SolList2) 
+                            = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, unbounded],
+                                               [NodeList1 || 
+                                               {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                                               || (NodeCounter, VarCounter, SolCounter)],  
+                                               SolList1 ; getCumulativeSub({ParentId, Term1, Subs1, Subs3}) ; SolList2) .
+    
+    --- Get solutions from unifiers when MaxSol is a nat > 0
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, s(MaxSol)],
+                        [NodeList1 || 
+                        {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                        || (NodeCounter, VarCounter, SolCounter)], 
+                        SolList1 ; {Subs3, VarQid3} ; SolList2) 
+                            = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                               [NodeList1 || 
+                                               {NodeId, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2 
+                                               || (NodeCounter, VarCounter, SolCounter)],  
+                                               SolList1 ; getCumulativeSub({ParentId, Term1, Subs1, Subs3}) ; SolList2) . 
+
+
+    --- If all unifiers have been processed, continue with the node generation
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                        [NodeList1 || NodeList2  || (NodeCounter, VarCounter, SolCounter)], SolList1) 
+                            = generateNext([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                           [NodeList1 || NodeList2  || (NodeCounter, VarCounter, SolCounter)], SolList1) [owise] .
+    
+
+    ----------------------------------------------------------------------------------------------------------
+    --- Get the cumulative substitution in a solution                                                      ---
+    ----------------------------------------------------------------------------------------------------------
+    op getCumulativeSub : Solution -> Solution .
+    op reduceSub : Module Substitution -> Substitution .
+
+    eq reduceSub(Mod, (none).Substitution) = (none).Substitution .
+    eq reduceSub(Mod, Var <- Term1 ; Subs1) = Var <- getTerm(metaReduce(Mod, Term1)) ; reduceSub(Mod, Subs1) .
+
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                        [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter)], 
+                        SolList1 ; getCumulativeSub({0, Term1, Subs1, Subs2}) ; SolList2) 
+                            = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                               [NodeList1 || NodeList2 || (NodeCounter, VarCounter, SolCounter + 1)], 
+                                               SolList1 ; {SolCounter, Term1, reduceSub(Mod, Subs1), reduceSub(Mod, Subs2)} ; SolList2) .
+
+    eq getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                        [NodeList1 ; {NodeId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                        || NodeList3 || (NodeCounter, VarCounter, SolCounter)], 
+                        SolList1 ; getCumulativeSub({NodeId:NzNat, Term2, Subs3, Subs4}) ; SolList2) 
+                            = getTermSolutions([Mod, InitTerm, SArrow, TargetTerm, AlgorithmOptionSet, VariantOptionSet, IrredTList, VarQid1, MaxDepth, MaxSol],
+                                               [NodeList1 ; {NodeId:NzNat, {Term1, Type1, Context1, RuleLabel1, Subs1, Subs2, VarQid2}, NodeBranch1, ParentId, NodeDepth1, LocalIrredTList1} ; NodeList2
+                                               || NodeList3 || (NodeCounter, VarCounter, SolCounter)], 
+                                               SolList1 ;  getCumulativeSub({ParentId, Term2, applySub(Subs1,Subs3), Subs4}) ; SolList2) .
+
+endfm
+
